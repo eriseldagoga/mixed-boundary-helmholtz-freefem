@@ -1,0 +1,72 @@
+// 1. Parameters and Constants
+real k = 7.85;
+real alpha = 2.0;
+
+// 2. Domain and Mesh Definition
+real Beta = 2*pi/3; // Defines the division
+border Part1 (t=0, Beta) { x=cos(t); y=sin(t); }
+border Part2 (t=Beta, 2*pi) { x=cos(t); y=sin(t); }
+
+mesh Th = buildmesh(Part1(400) + Part2(350));
+plot(Th, wait=true, ps="Th.eps");
+
+// 3. Finite Element Spaces
+fespace Vh(Th, P1);
+Vh<complex> phi0h, eta, wh;
+
+// 4. Boundary Data
+// Define the incident plane wave (incoming from the left)
+func incident = exp(1i*k*x);
+
+// Dirichlet data on the conductor (canceling the incident wave)
+func f = -incident;
+
+// Impedance data on the coated part
+// We compute(du_inc/dn + i*alpha*u_inc)
+// Note: For u_inc = exp(ikx), dy(u_inc) is 0.
+func h = -((1i*k * incident * N.x) + (1i*alpha * incident));
+
+// 5. The Solution Process
+// Step 1: Solve for phi0h (extension of Dirichlet boundary condition)
+solve Laplace(phi0h, eta) =
+    int2d(Th)( dx(phi0h)*dx(eta) + dy(phi0h)*dy(eta) )
+    + on(Part1, phi0h = f);
+
+// Define htilda
+func htilda = -dx(phi0h)*N.x - dy(phi0h)*N.y - 1i*alpha*phi0h + h;
+
+// Step 2: Solve the main problem for wh
+solve elliptic(wh, eta) =
+    int2d(Th)( (dx(wh)*dx(eta) + dy(wh)*dy(eta)) - k*k*wh*eta )
+    + int1d(Th, Part2)( 1i*alpha*wh*eta )
+    - int2d(Th)( k*k*phi0h*eta )
+    - int1d(Th, Part2)( htilda*eta )
+    + on(Part1, wh = 0);
+
+// Final approximate solution
+Vh<complex> phih = wh + phi0h;
+
+// 6. Visualization
+Vh phihmag = abs(phih);
+
+// Create separate real-valued functions for real part of the solution
+Vh phihreal = real(phih);
+
+// Define a more detailed HSV color table with red for high values
+real[int] hsvColors = [
+    0.66, 1.0, 1.0, // Blue for lower values
+    0.33, 1.0, 1.0, // Green for middle values (hue=0.33)
+    0.15, 1.0, 1.0, // Yellow for higher values (hue=0.15)
+    0.0, 1.0, 1.0   // Red for the highest values (hue=0.0)
+];
+
+// Plot Magnitude
+plot(phihmag, fill=true, value=true, hsv=hsvColors,
+     nbiso = 20, // Number of contour lines.
+     ps="Improved Magnitude Plot.eps");
+
+// Plot Real Part
+plot(phihreal, fill=true, value=true,
+     hsv=hsvColors, // Use the custom hsv color table
+     nbiso = 20, // Number of contour lines
+     ps="RealpartPlot.eps");
