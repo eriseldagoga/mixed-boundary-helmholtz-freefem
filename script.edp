@@ -18,22 +18,21 @@ Vh<complex> phi0h, eta, wh;
 // Define the incident plane wave (incoming from the left)
 func incident = exp(1i*k*x);
 
-// Dirichlet data on the conductor (canceling the incident wave)
+// Dirichlet data on the conductor (cancelling the incident wave)
 func f = -incident;
 
 // Impedance data on the coated part
-// We compute(du_inc/dn + i*alpha*u_inc)
-// Note: For u_inc = exp(ikx), dy(u_inc) is 0.
-func h = -((1i*k * incident * N.x) + (1i*alpha * incident));
+func h = 0.;
 
 // 5. The Solution Process
 // Step 1: Solve for phi0h (extension of Dirichlet boundary condition)
+// The condition d(phi0h)/dn = 0 on Part2 holds as a natural condition
 solve Laplace(phi0h, eta) =
     int2d(Th)( dx(phi0h)*dx(eta) + dy(phi0h)*dy(eta) )
     + on(Part1, phi0h = f);
 
 // Define htilda
-func htilda = -dx(phi0h)*N.x - dy(phi0h)*N.y - 1i*alpha*phi0h + h;
+func htilda = h - 1i*alpha*phi0h;
 
 // Step 2: Solve the main problem for wh
 solve elliptic(wh, eta) =
@@ -46,11 +45,14 @@ solve elliptic(wh, eta) =
 // Final approximate solution
 Vh<complex> phih = wh + phi0h;
 
+// L2 norm of the solution
+cout << "elements = " << Th.nt << "   L2 norm = " << sqrt(int2d(Th)(abs(phih)^2)) << endl;
+
 // 6. Visualization
 Vh phihmag = abs(phih);
 
-// Create separate real-valued functions for real part of the solution
-Vh phihreal = real(phih);
+// Real part of the total field (incident + phih)
+Vh phihreal = real(phih + incident);
 
 // Define a more detailed HSV color table with red for high values
 real[int] hsvColors = [
@@ -63,10 +65,24 @@ real[int] hsvColors = [
 // Plot Magnitude
 plot(phihmag, fill=true, value=true, hsv=hsvColors,
      nbiso = 20, // Number of contour lines.
-     ps="Improved Magnitude Plot.eps");
+     wait=true, ps="Improved Magnitude Plot.eps");
 
 // Plot Real Part
 plot(phihreal, fill=true, value=true,
      hsv=hsvColors, // Use the custom hsv color table
      nbiso = 20, // Number of contour lines
-     ps="RealpartPlot.eps");
+     wait=true, ps="RealpartPlot.eps");
+
+// 7. Magnitude along the boundary (Figure 6)
+int nb = 3600;
+real[int] th(nb+1), mag(nb+1);
+for (int i = 0; i <= nb; i++) {
+  real t = 2*pi*i/nb;
+  th[i] = t;
+  mag[i] = abs(phih(0.99999*cos(t), 0.99999*sin(t)));
+}
+{
+  ofstream fb("boundary_magnitude.txt");
+  for (int i = 0; i <= nb; i++) fb << th[i] << " " << mag[i] << endl;
+}
+plot([th, mag], wait=true, ps="Figure6_boundary.eps");
