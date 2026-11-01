@@ -49,7 +49,7 @@ Output files:
 - `boundary_magnitude.txt`: two columns, $\theta$ and $|u|$ on the boundary (3601 points), used for Figure 6
 - `Figure6_boundary.eps`: plot of the boundary magnitude
 
-The script prints the number of elements and the L2 norm $\|u\|_{L^2(\Omega)}$ in the console.
+The script prints the number of elements and the L2 norm $\|\varphi\|_{L^2(\Omega)}$ in the console.
 
 ## Parameters
 
@@ -74,7 +74,7 @@ Here $h = \sqrt{|\Omega_h| / N_T}$, where $N_T$ is the number of elements.
 
 ## Results (Table 1)
 
-L2 norm of $u$ for $k = 7.85$ and $\alpha = 2.0$:
+L2 norm of $\varphi$ for $k = 7.85$ and $\alpha = 2.0$:
 
 | Mesh | L2 norm | Relative difference (%) |
 |---|---|---|
