@@ -83,7 +83,7 @@ L2 norm of $u$ for $k = 7.85$ and $\alpha = 2.0$:
 | III | 1.4760 | 1.22 |
 | IV | 1.4619 | 0.96 |
 
-The grid convergence index (GCI) [2] is computed from the three finest meshes (II, III and IV): $r_{21} = 2.2422$, $r_{32} = 1.4533$, observed order $p = 1.84$, extrapolated value $1.4578$. The finest mesh is 0.28% above the extrapolated value, with $e_a = 0.964\%$ and GCI = 0.35%.
+The grid convergence index (GCI) [2] is computed from the three finest meshes (II, III and IV): $r_{21} = 2.2405$, $r_{32} = 1.4539$, observed order $p = 1.83$, extrapolated value $1.4577$. The finest mesh is 0.28% above the extrapolated value, with $e_a = 0.964\%$ and GCI = 0.36%.
 
 ## Requirements
 
