@@ -7,25 +7,25 @@ This repository contains the FreeFEM [1] script used for the numerical results i
 On the unit disc $\Omega$, the script computes the scattered field $\varphi$ that satisfies
 
 $$
-\Delta u + k^2 u = 0 \quad \text{in } \Omega,
+\Delta \varphi + k^2 \varphi = 0 \quad \text{in } \Omega,
 $$
 
 with a Dirichlet condition on Part 1 of the boundary and an impedance (Robin) condition on Part 2:
 
 $$
-varphi = f \quad \text{on } \Gamma_1 = \{\theta \in [0, 2\pi/3]\}, \qquad
-\frac{\partial varphi}{\partial n} + i\alpha varphi = h \quad \text{on } \Gamma_2 = \{\theta \in [2\pi/3, 2\pi]\}.
+\varphi = f \quad \text{on } \Gamma_1 = \{\theta \in [0, 2\pi/3]\}, \qquad
+\frac{\partial \varphi}{\partial n} + i\alpha \varphi = h \quad \text{on } \Gamma_2 = \{\theta \in [2\pi/3, 2\pi]\}.
 $$
 
-The incident plane wave is $u_{inc} = e^{ikx}$. The data are $f = -u_{inc}$ on $\Gamma_1$ and $h = 0$ on $\Gamma_2$. The total field is $varphi + u_{inc}$.
+The incident plane wave is $u_{inc} = e^{ikx}$. The data are $f = -u_{inc}$ on $\Gamma_1$ and $h = 0$ on $\Gamma_2$. The total field is $\varphi + u_{inc}$.
 
 ## Method
 
 The Dirichlet data are removed with a lifting function $\varphi_0$:
 
 1. $\varphi_0$ solves the Laplace equation in $\Omega$ with $\varphi_0 = f$ on $\Gamma_1$ and $\partial\varphi_0/\partial n = 0$ on $\Gamma_2$ (natural condition).
-2. The function $w = u - \varphi_0$ satisfies a Robin condition on $\Gamma_2$ with data $\tilde{h} = h - i\alpha\varphi_0$, and $w = 0$ on $\Gamma_1$.
-3. Both problems are solved with P1 finite elements, and $u = w + \varphi_0$.
+2. The function $w = \varphi - \varphi_0$ satisfies a Robin condition on $\Gamma_2$ with data $\tilde{h} = h - i\alpha\varphi_0$, and $w = 0$ on $\Gamma_1$.
+3. Both problems are solved with P1 finite elements, and $\varphi = w + \varphi_0$.
 
 ## File
 
