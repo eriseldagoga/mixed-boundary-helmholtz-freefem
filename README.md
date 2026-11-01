@@ -4,7 +4,7 @@ This repository contains the FreeFEM [1] script used for the numerical results i
 
 ## Problem
 
-On the unit disc $\Omega$, the script computes the scattered field $phi$ that satisfies
+On the unit disc $\Omega$, the script computes the scattered field $\varphi$ that satisfies
 
 $$
 \Delta u + k^2 u = 0 \quad \text{in } \Omega,
