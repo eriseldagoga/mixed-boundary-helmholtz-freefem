@@ -4,20 +4,20 @@ This repository contains the FreeFEM [1] script used for the numerical results i
 
 ## Problem
 
-On the unit disc $\Omega$, the script computes the scattered field $u$ that satisfies
+On the unit disc $\Omega$, the script computes the scattered field $varphi$ that satisfies
 
 $$
-\Delta u + k^2 u = 0 \quad \text{in } \Omega,
+\Delta varphi + k^2 varphi = 0 \quad \text{in } \Omega,
 $$
 
 with a Dirichlet condition on Part 1 of the boundary and an impedance (Robin) condition on Part 2:
 
 $$
-u = f \quad \text{on } \Gamma_1 = \{\theta \in [0, 2\pi/3]\}, \qquad
-\frac{\partial u}{\partial n} + i\alpha u = h \quad \text{on } \Gamma_2 = \{\theta \in [2\pi/3, 2\pi]\}.
+varphi = f \quad \text{on } \Gamma_1 = \{\theta \in [0, 2\pi/3]\}, \qquad
+\frac{\partial varphi}{\partial n} + i\alpha varphi = h \quad \text{on } \Gamma_2 = \{\theta \in [2\pi/3, 2\pi]\}.
 $$
 
-The incident plane wave is $u_{inc} = e^{ikx}$. The data are $f = -u_{inc}$ on $\Gamma_1$ and $h = 0$ on $\Gamma_2$. The total field is $u + u_{inc}$.
+The incident plane wave is $u_{inc} = e^{ikx}$. The data are $f = -u_{inc}$ on $\Gamma_1$ and $h = 0$ on $\Gamma_2$. The total field is $varphi + u_{inc}$.
 
 ## Method
 
