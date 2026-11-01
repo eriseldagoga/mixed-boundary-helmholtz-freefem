@@ -4,10 +4,10 @@ This repository contains the FreeFEM [1] script used for the numerical results i
 
 ## Problem
 
-On the unit disc $\Omega$, the script computes the scattered field $varphi$ that satisfies
+On the unit disc $\Omega$, the script computes the scattered field $phi$ that satisfies
 
 $$
-\Delta varphi + k^2 varphi = 0 \quad \text{in } \Omega,
+\Delta u + k^2 u = 0 \quad \text{in } \Omega,
 $$
 
 with a Dirichlet condition on Part 1 of the boundary and an impedance (Robin) condition on Part 2:
